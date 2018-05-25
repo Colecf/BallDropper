@@ -11,19 +11,29 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        Cursor.lockState = CursorLockMode.Locked;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        transform.Translate(new Vector3(Input.GetAxis("Horizontal")*moveSpeed, 0, Input.GetAxis("Vertical")*moveSpeed));
 
-        float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        if (Cursor.lockState == CursorLockMode.Locked) {
+            transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, 0, Input.GetAxis("Vertical") * moveSpeed));
 
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-        rotationY = Mathf.Clamp(rotationY, -89, 89);
+            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
-        transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-        print(rotationY);
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            rotationY = Mathf.Clamp(rotationY, -89, 89);
+
+            transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+        }
 	}
 }
