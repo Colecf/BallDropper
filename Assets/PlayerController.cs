@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour {
             Vector3 temp = currentPlatform.transform.localScale;
             temp.z = (lookedAtPoint - platformStart).magnitude;
             currentPlatform.transform.localScale = temp;
+
+            currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
         }
         if (Cursor.lockState == CursorLockMode.Locked) {
             transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, 0, Input.GetAxis("Vertical") * moveSpeed));
@@ -59,4 +61,8 @@ public class PlayerController : MonoBehaviour {
             transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
         }
 	}
+    public Quaternion vectorRotationQ(Vector3 from, Vector3 target)
+    {
+        return Quaternion.Euler(Quaternion.LookRotation(target).eulerAngles - Quaternion.LookRotation(from).eulerAngles);
+    }
 }
