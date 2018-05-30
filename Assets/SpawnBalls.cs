@@ -18,6 +18,6 @@ public class SpawnBalls : MonoBehaviour {
 	}
 
     void spawnBalls(){
-        GameObject go1 = (GameObject)Instantiate(prefab, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+        Instantiate(prefab, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
     }
 }
