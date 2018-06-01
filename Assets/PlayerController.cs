@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
         theCamera = GameObject.Find("Main Camera");
+        UnityEngine.XR.XRSettings.LoadDeviceByName("");
+        //yield return new WaitForEndOfFrame();
+        UnityEngine.XR.XRSettings.enabled = false;
 	}
 
     // Update is called once per frame
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviour {
 
             float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
+            Debug.Log(Input.GetAxis("Mouse Y"));
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
             rotationY = Mathf.Clamp(rotationY, -89, 89);
 
