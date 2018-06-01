@@ -46,15 +46,7 @@ public class PlayerController : MonoBehaviour {
                 currentPlatform = null;
             }
         }
-        if(currentPlatform) {
-            currentPlatform.transform.position = (platformStart + lookedAtPoint) / 2;
-            Vector3 temp = currentPlatform.transform.localScale;
-            temp.z = (lookedAtPoint - platformStart).magnitude;
-            temp.x = platformWidth;
-            currentPlatform.transform.localScale = temp;
 
-            currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
-        }
         if (Cursor.lockState == CursorLockMode.Locked) {
             platformWidth += Input.GetAxis("Mouse ScrollWheel");
             if(platformWidth < 0.1f) {
@@ -81,19 +73,12 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (lookedAtObject != hit.collider.gameObject)
                     {
-                        if (lookedAtObject)
-                        {
-                            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                        }
+                        unhighlightPlatform();
                         lookedAtObject = hit.collider.gameObject;
                         lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
                     }
                 } else {
-                    if (lookedAtObject)
-                    {
-                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    }
-                    lookedAtObject = null;
+                    unhighlightPlatform();
                 }
 
                 if(Input.GetMouseButtonDown(1) && lookedAtObject) {
@@ -101,11 +86,15 @@ public class PlayerController : MonoBehaviour {
                     lookedAtObject = null;
                 }
             } else {
-                if (lookedAtObject)
-                {
-                    lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                }
-                lookedAtObject = null;
+                currentPlatform.transform.position = (platformStart + lookedAtPoint) / 2;
+                Vector3 temp = currentPlatform.transform.localScale;
+                temp.z = (lookedAtPoint - platformStart).magnitude;
+                temp.x = platformWidth;
+                currentPlatform.transform.localScale = temp;
+
+                currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+
+                unhighlightPlatform();
             }
         }
 	}
@@ -113,5 +102,14 @@ public class PlayerController : MonoBehaviour {
     private Quaternion vectorRotationQ(Vector3 from, Vector3 target)
     {
         return Quaternion.Euler(Quaternion.LookRotation(target).eulerAngles - Quaternion.LookRotation(from).eulerAngles);
+    }
+
+    private void unhighlightPlatform()
+    {
+        if (lookedAtObject)
+        {
+            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        lookedAtObject = null;
     }
 }
