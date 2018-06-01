@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject platformTemplate;
     private GameObject currentPlatform = null;
     private Vector3 platformStart;
+    private float platformWidth = 1.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour {
                 platformStart = lookedAtPoint;
                 currentPlatform = Instantiate(platformTemplate);
                 currentPlatform.transform.position = lookedAtPoint;
+                platformWidth = 1.0f;
             } else {
                 currentPlatform = null;
             }
@@ -46,11 +48,19 @@ public class PlayerController : MonoBehaviour {
             currentPlatform.transform.position = (platformStart + lookedAtPoint) / 2;
             Vector3 temp = currentPlatform.transform.localScale;
             temp.z = (lookedAtPoint - platformStart).magnitude;
+            temp.x = platformWidth;
             currentPlatform.transform.localScale = temp;
 
             currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
         }
         if (Cursor.lockState == CursorLockMode.Locked) {
+            platformWidth += Input.GetAxis("Mouse ScrollWheel");
+            if(platformWidth < 0.1f) {
+                platformWidth = 0.1f;
+            }
+            if(platformWidth > 20) {
+                platformWidth = 20;
+            }
             transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, Input.GetAxis("Flight") * moveSpeed, Input.GetAxis("Vertical") * moveSpeed));
 
             float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
