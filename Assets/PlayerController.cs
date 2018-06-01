@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour {
     private Vector3 platformStart;
     private float platformWidth = 1.0f;
 
+    private GameObject lookedAtObject = null;
+
 	// Use this for initialization
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -70,6 +72,41 @@ public class PlayerController : MonoBehaviour {
 
             transform.localEulerAngles = new Vector3(-0, rotationX, 0);
             theCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+
+            if(!currentPlatform) {
+                RaycastHit hit;
+                Vector3 direction = theCamera.transform.rotation * new Vector3(0, 0, 1);
+                if (Physics.Raycast(transform.position, direction, out hit, 10) &&
+                    hit.collider.gameObject.CompareTag("Platform"))
+                {
+                    if (lookedAtObject != hit.collider.gameObject)
+                    {
+                        if (lookedAtObject)
+                        {
+                            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                        }
+                        lookedAtObject = hit.collider.gameObject;
+                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+                    }
+                } else {
+                    if (lookedAtObject)
+                    {
+                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    }
+                    lookedAtObject = null;
+                }
+
+                if(Input.GetMouseButtonDown(1) && lookedAtObject) {
+                    Destroy(lookedAtObject);
+                    lookedAtObject = null;
+                }
+            } else {
+                if (lookedAtObject)
+                {
+                    lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                lookedAtObject = null;
+            }
         }
 	}
 
