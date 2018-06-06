@@ -23,6 +23,6 @@ public class DetectCollision : MonoBehaviour {
         angleContactPointVelocity.Add(contactPoint.y);
         angleContactPointVelocity.Add(velMag);
 
-        OSCHandler.Instance.SendMessageToClient("PD", "/unity/AngleContactPointVelocity", angleContactPointVelocity);
+        //OSCHandler.Instance.SendMessageToClient("PD", "/unity/AngleContactPointVelocity", angleContactPointVelocity);
     }
 }
