@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         unhighlightPlatform();
                         lookedAtObject = hit.collider.gameObject;
-                        lookedAtObject.GetComponent<Renderer>().material.SetFloat("_DeleteHighlight", 1.0f);
+                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     }
                 } else {
                     unhighlightPlatform();
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (lookedAtObject)
         {
-            lookedAtObject.GetComponent<Renderer>().material.SetFloat("_DeleteHighlight", 0.0f);
+            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         }
         lookedAtObject = null;
     }
