@@ -98,7 +98,7 @@ public class VRHands : MonoBehaviour {
         if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            lookedAtObject.GetComponent<Renderer>().material.SetFloat("_DeleteHighlight", 1.0f);
         }
     }
 
@@ -107,7 +107,7 @@ public class VRHands : MonoBehaviour {
         if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            lookedAtObject.GetComponent<Renderer>().material.SetFloat("_DeleteHighlight", 1.0f);
         }
     }
 
@@ -115,7 +115,7 @@ public class VRHands : MonoBehaviour {
     {
         if (other.gameObject == lookedAtObject)
         {
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            lookedAtObject.GetComponent<Renderer>().material.SetFloat("_DeleteHighlight", 0.0f);
             lookedAtObject = null;
         }
     }
