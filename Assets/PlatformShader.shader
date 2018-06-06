@@ -1,10 +1,12 @@
-﻿Shader "Custom/PlatformShader" {
+﻿// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+
+Shader "Custom/PlatformShader" {
 	Properties{
-		_DeleteHighlight("DeleteHighlight", Float) = 0
+		_Color("Color", Color) = (1,1,1,1)
 	}
-	SubShader{
-		
-		Pass{
+		SubShader{
+
+			Pass{
 		//Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
 		//LOD 100
 		//
@@ -15,9 +17,13 @@
 
 		#pragma vertex vert
 		#pragma fragment frag
+		#pragma multi_compile_instancing
 		#include "UnityCG.cginc"
 
-		float _DeleteHighlight;
+		UNITY_INSTANCING_BUFFER_START(Props)
+			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+#define _Color_arr Props
+		UNITY_INSTANCING_BUFFER_END(Props)
 
 		float3 mod(float3 x, float3 y)
 	{
@@ -230,16 +236,10 @@
 				importantAxis.y = 2;
 			}
 			float distToEdge = min(distances[importantAxis.x], distances[importantAxis.y]);
-			//return fixed4((distances[importantAxis.y]-worldScale[importantAxis.y]/2)/length(worldScale)/10, 0, 0, 1);
 			float3 p = float3(_SinTime.z * 5, i.objPos[importantAxis.x], i.objPos[importantAxis.y]);
 			distToEdge *= pnoise(p, float3(1.5, 1.5, 1.5)) * 0.5 + pnoise(float3(p.x, p.y*2, p.z*2*worldScale[importantAxis.y]/worldScale[importantAxis.x]), float3(1.5, 1.5, 1.5)) * 0.2 + 1;
 			distToEdge = pow(1 - distToEdge, 7);
-			if (!_DeleteHighlight) {
-				return fixed4(distToEdge, distToEdge, distToEdge, 1);
-			}
-			else {
-				return fixed4(distToEdge, 0, 0, 1);
-			}
+			return fixed4(distToEdge * UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).rgb, 1);
 			//return fixed4(worldScale.z/length(worldScale), 0, 0,1);
 		}
 		ENDCG
