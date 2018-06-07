@@ -39,12 +39,25 @@ public class PlayerController : MonoBehaviour {
         {
             Cursor.lockState = CursorLockMode.Locked;
 
+            
             if (currentPlatform == null)
             {
-                platformStart = lookedAtPoint;
-                currentPlatform = Instantiate(platformTemplate);
-                currentPlatform.transform.position = lookedAtPoint;
-                platformWidth = 1.0f;
+                bool absorbed = false;
+                foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
+                {
+                    if (o.GetComponent<SpawnBalls>())
+                    {
+                        absorbed = absorbed || o.GetComponent<SpawnBalls>().myClick();
+                    }
+                }
+                if (!absorbed)
+                {
+                    Debug.Log("not absorbed");
+                    platformStart = lookedAtPoint;
+                    currentPlatform = Instantiate(platformTemplate);
+                    currentPlatform.transform.position = lookedAtPoint;
+                    platformWidth = 1.0f;
+                }
             } else {
                 currentPlatform = null;
             }
@@ -71,7 +84,7 @@ public class PlayerController : MonoBehaviour {
             if(!currentPlatform) {
                 RaycastHit hit;
                 Vector3 direction = theCamera.transform.rotation * new Vector3(0, 0, 1);
-                if (Physics.Raycast(transform.position, direction, out hit, 10) &&
+                if (Physics.Raycast(transform.position, direction, out hit, 10, LayerMask.GetMask("Platform")) &&
                     hit.collider.gameObject.CompareTag("Platform"))
                 {
                     if (lookedAtObject != hit.collider.gameObject)
@@ -95,7 +108,10 @@ public class PlayerController : MonoBehaviour {
                 temp.x = platformWidth;
                 currentPlatform.transform.localScale = temp;
 
-                currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                if ((lookedAtPoint - platformStart).magnitude > 0)
+                {
+                    currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                }
 
                 unhighlightPlatform();
             }
