@@ -24,7 +24,6 @@ public class SpawnBalls : MonoBehaviour {
 
     public bool myClick()
     {
-        Debug.Log("MyClick called");
         bool i = increaseButton && increaseButton.GetComponent<RateButton>().isPressed();
         bool d = decreaseButton && decreaseButton.GetComponent<RateButton>().isPressed();
         if (i)
@@ -34,10 +33,6 @@ public class SpawnBalls : MonoBehaviour {
         if(d)
         {
             spawnSpeed *= 1.2f;
-        }
-        if(i || d)
-        {
-            Debug.Log("Click");
         }
 
         return i || d;
