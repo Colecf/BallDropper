@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
         //yield return new WaitForEndOfFrame();
         UnityEngine.XR.XRSettings.enabled = false;
         //OSCHandler.Instance.Init();
-        //OSCHandler.Instance.SendMessageToClient("PD", "/unity/trigger", "ready");
+        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
 	}
 
     // Update is called once per frame
