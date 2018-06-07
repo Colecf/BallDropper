@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityOSC;
 
 public class PlayerController : MonoBehaviour {
 
@@ -25,6 +26,8 @@ public class PlayerController : MonoBehaviour {
         UnityEngine.XR.XRSettings.LoadDeviceByName("");
         //yield return new WaitForEndOfFrame();
         UnityEngine.XR.XRSettings.enabled = false;
+        //OSCHandler.Instance.Init();
+        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
 	}
 
     // Update is called once per frame
@@ -39,12 +42,24 @@ public class PlayerController : MonoBehaviour {
         {
             Cursor.lockState = CursorLockMode.Locked;
 
+            
             if (currentPlatform == null)
             {
-                platformStart = lookedAtPoint;
-                currentPlatform = Instantiate(platformTemplate);
-                currentPlatform.transform.position = lookedAtPoint;
-                platformWidth = 1.0f;
+                bool absorbed = false;
+                foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
+                {
+                    if (o.GetComponent<SpawnBalls>())
+                    {
+                        absorbed = absorbed || o.GetComponent<SpawnBalls>().myClick();
+                    }
+                }
+                if (!absorbed)
+                {
+                    platformStart = lookedAtPoint;
+                    currentPlatform = Instantiate(platformTemplate);
+                    currentPlatform.transform.position = lookedAtPoint;
+                    platformWidth = 1.0f;
+                }
             } else {
                 currentPlatform = null;
             }
@@ -71,14 +86,14 @@ public class PlayerController : MonoBehaviour {
             if(!currentPlatform) {
                 RaycastHit hit;
                 Vector3 direction = theCamera.transform.rotation * new Vector3(0, 0, 1);
-                if (Physics.Raycast(transform.position, direction, out hit, 10) &&
+                if (Physics.Raycast(transform.position, direction, out hit, 10, LayerMask.GetMask("Platform")) &&
                     hit.collider.gameObject.CompareTag("Platform"))
                 {
                     if (lookedAtObject != hit.collider.gameObject)
                     {
                         unhighlightPlatform();
                         lookedAtObject = hit.collider.gameObject;
-                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     }
                 } else {
                     unhighlightPlatform();
@@ -95,7 +110,10 @@ public class PlayerController : MonoBehaviour {
                 temp.x = platformWidth;
                 currentPlatform.transform.localScale = temp;
 
-                currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                if ((lookedAtPoint - platformStart).magnitude > 0)
+                {
+                    currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                }
 
                 unhighlightPlatform();
             }

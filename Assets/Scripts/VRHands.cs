@@ -46,15 +46,25 @@ public class VRHands : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Clicked");
                 if (currentPlatform == null)
                 {
-                    platformStart = platformEnd = trackedObj.transform.position;
-                    currentPlatform = Instantiate(platformTemplate);
-                    currentPlatform.transform.position = platformStart;
-                    platformWidth = 1.0f;
-                    isStartHand = false;
-                    setScale(currentPlatform, 0.2f, 0.2f, 0.2f);
+                    bool absorbed = false;
+                    foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
+                    {
+                        if (o.GetComponent<SpawnBalls>())
+                        {
+                            absorbed = absorbed || o.GetComponent<SpawnBalls>().myClick();
+                        }
+                    }
+                    if (!absorbed)
+                    {
+                        platformStart = platformEnd = trackedObj.transform.position;
+                        currentPlatform = Instantiate(platformTemplate);
+                        currentPlatform.transform.position = platformStart;
+                        platformWidth = 1.0f;
+                        isStartHand = false;
+                        setScale(currentPlatform, 0.2f, 0.2f, 0.2f);
+                    }
                 }
                 else
                 {
