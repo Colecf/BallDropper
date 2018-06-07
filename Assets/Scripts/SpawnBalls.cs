@@ -34,7 +34,7 @@ public class SpawnBalls : MonoBehaviour {
         {
             spawnSpeed *= 1.2f;
         }
-        OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", spawnSpeed);
+        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", spawnSpeed);
         return i || d;
     }
     void spawnBalls(){
