@@ -13,7 +13,17 @@ public class PlayerController : MonoBehaviour {
     private GameObject theCamera;
 
     public GameObject platformTemplate;
+    public GameObject platformTemplate2;
+    public GameObject platformTemplate3;
+
+    public Material material1;
+    public Material material2;
+    public Material material3;
+    public Material selectedMaterial;
+
     private GameObject currentPlatform = null;
+    private GameObject selectedPlatform = null;
+
     private Vector3 platformStart;
     private float platformWidth = 1.0f;
 
@@ -26,8 +36,9 @@ public class PlayerController : MonoBehaviour {
         UnityEngine.XR.XRSettings.LoadDeviceByName("");
         //yield return new WaitForEndOfFrame();
         UnityEngine.XR.XRSettings.enabled = false;
-        OSCHandler.Instance.Init();
-        OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
+        selectedPlatform = platformTemplate;
+        //OSCHandler.Instance.Init();
+        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
 	}
 
     // Update is called once per frame
@@ -56,7 +67,7 @@ public class PlayerController : MonoBehaviour {
                 if (!absorbed)
                 {
                     platformStart = lookedAtPoint;
-                    currentPlatform = Instantiate(platformTemplate);
+                    currentPlatform = Instantiate(selectedPlatform);
                     currentPlatform.transform.position = lookedAtPoint;
                     platformWidth = 1.0f;
                 }
@@ -93,7 +104,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         unhighlightPlatform();
                         lookedAtObject = hit.collider.gameObject;
-                        lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        lookedAtObject.GetComponent<Renderer>().material = selectedMaterial;
                     }
                 } else {
                     unhighlightPlatform();
@@ -103,6 +114,7 @@ public class PlayerController : MonoBehaviour {
                     Destroy(lookedAtObject);
                     lookedAtObject = null;
                 }
+
             } else {
                 currentPlatform.transform.position = (platformStart + lookedAtPoint) / 2;
                 Vector3 temp = currentPlatform.transform.localScale;
@@ -118,6 +130,21 @@ public class PlayerController : MonoBehaviour {
                 unhighlightPlatform();
             }
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (selectedPlatform == platformTemplate)
+            {
+                selectedPlatform = platformTemplate2;
+            }
+            else if (selectedPlatform == platformTemplate2)
+            {
+                selectedPlatform = platformTemplate3;
+            }
+            else
+            {
+                selectedPlatform = platformTemplate;
+            }
+        }
 	}
 
     private Quaternion vectorRotationQ(Vector3 from, Vector3 target)
@@ -129,7 +156,15 @@ public class PlayerController : MonoBehaviour {
     {
         if (lookedAtObject)
         {
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if(lookedAtObject.name.Contains("PlatformBase3")){
+                lookedAtObject.GetComponent<Renderer>().material = material3;
+            }
+            else if(lookedAtObject.name.Contains("PlatformBase2")){
+                lookedAtObject.GetComponent<Renderer>().material = material2;
+            }
+            else{
+                lookedAtObject.GetComponent<Renderer>().material = material1;
+            }
         }
         lookedAtObject = null;
     }
