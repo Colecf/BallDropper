@@ -9,6 +9,8 @@ public class VRHands : MonoBehaviour {
         get { return SteamVR_Controller.Input((int)trackedObj.index); }
     }
 
+    public bool isLeftHand = false;
+
     public static GameObject platformTemplate = null;
     private static GameObject currentPlatform = null;
     private static Vector3 platformStart;
@@ -17,13 +19,32 @@ public class VRHands : MonoBehaviour {
     private bool isStartHand = false;
     private bool drawing = false;
 
+    public GameObject parentObj;
+    private Vector3 displacementBase;
+    private Vector3 scaleBase;
+
+    class GripState
+    {
+        public Vector3 start;
+        public Vector3 current;
+        public bool active = false;
+        public Vector3 delta
+        {
+            get { return current - start; }
+        }
+        public float getScaleDelta(GripState other)
+        {
+            return (current - other.current).magnitude - (start - other.start).magnitude;
+        }
+    }
+
+    private static GripState[] gripStates = { new GripState(), new GripState() };
+
     private GameObject lookedAtObject = null;
 
     // Use this for initialization
     void Start () {
         platformTemplate = Resources.Load("PlatformBase") as GameObject;
-        Debug.Log("Start");
-        
     }
 
     void Awake()
@@ -63,7 +84,6 @@ public class VRHands : MonoBehaviour {
                         currentPlatform.transform.position = platformStart;
                         platformWidth = 1.0f;
                         isStartHand = false;
-                        setScale(currentPlatform, 0.2f, 0.2f, 0.2f);
                     }
                 }
                 else
@@ -96,9 +116,48 @@ public class VRHands : MonoBehaviour {
             if (!isStartHand)
             {
                 currentPlatform.transform.position = (platformStart + platformEnd) / 2;
-                setScale(currentPlatform, platformWidth*0.2f, 0.2f, (platformEnd - platformStart).magnitude);
+                setScale(currentPlatform, platformWidth, 1f, (platformEnd - platformStart).magnitude);
 
-                currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (platformEnd - platformStart).normalized);
+                if((platformEnd - platformStart).magnitude > 0)
+                    currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (platformEnd - platformStart).normalized);
+            }
+        }
+
+        GripState myGripState;
+        GripState otherGripState;
+        if (isLeftHand)
+        {
+            myGripState = gripStates[1];
+            otherGripState = gripStates[0];
+        }
+        else
+        {
+            myGripState = gripStates[0];
+            otherGripState = gripStates[1];
+        }
+
+        if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+        {
+            myGripState.active = true;
+            myGripState.start = trackedObj.transform.localPosition;
+            displacementBase = parentObj.transform.position;
+            scaleBase = parentObj.transform.localScale;
+        }
+        if(Controller.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
+        {
+            myGripState.active = false;
+        }
+
+        if(myGripState.active)
+        {
+            myGripState.current = trackedObj.transform.localPosition;
+            if (!otherGripState.active)
+            {
+                parentObj.transform.position = displacementBase + -scaleBase.x*myGripState.delta;
+            }
+            if (otherGripState.active && isLeftHand)
+            {
+                parentObj.transform.localScale = scaleBase + -scaleBase.x*new Vector3(myGripState.getScaleDelta(otherGripState), myGripState.getScaleDelta(otherGripState), myGripState.getScaleDelta(otherGripState));
             }
         }
     }

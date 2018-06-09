@@ -21,11 +21,12 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        UnityEngine.XR.XRSettings.enabled = false;
+        UnityEngine.XR.XRSettings.LoadDeviceByName("");
+
         Cursor.lockState = CursorLockMode.Locked;
         theCamera = GameObject.Find("Main Camera");
-        UnityEngine.XR.XRSettings.LoadDeviceByName("");
         //yield return new WaitForEndOfFrame();
-        UnityEngine.XR.XRSettings.enabled = false;
         OSCHandler.Instance.Init();
         OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
 	}
