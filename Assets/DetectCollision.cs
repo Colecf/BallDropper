@@ -19,10 +19,23 @@ public class DetectCollision : MonoBehaviour {
         Vector3 contactPoint = collision.contacts[0].point;
 
         List<float> angleContactPointVelocity = new List<float>();
+
         angleContactPointVelocity.Add(angle);
         angleContactPointVelocity.Add(contactPoint.y);
         angleContactPointVelocity.Add(velMag);
-
-        OSCHandler.Instance.SendMessageToClient("PD", "/unity/AngleContactPointVelocity", angleContactPointVelocity);
+        string other = collision.contacts[0].otherCollider.name;
+        float platformType = -1.0f;
+        if(other.Contains("PlatformBase2")){
+            platformType = 2.0f;
+        }
+        else if(other.Contains("PlatformBase3")){
+            platformType = 3.0f;
+        }
+        else{
+            platformType = 1.0f;
+        }
+        print(platformType);
+        angleContactPointVelocity.Add(platformType);
+        //OSCHandler.Instance.SendMessageToClient("PD", "/unity/AngleContactPointVelocity", angleContactPointVelocity);
     }
 }

@@ -661,9 +661,9 @@ GameObject:
   - component: {fileID: 1615462901}
   - component: {fileID: 1615462900}
   - component: {fileID: 1615462899}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -767,6 +767,14 @@ MonoBehaviour:
   moveSpeed: 0.5
   platformTemplate: {fileID: 1007498539336144, guid: b048d74441fb6f84e821f7242a2efc26,
     type: 2}
+  platformTemplate2: {fileID: 1163989103591020, guid: 9200606f5ea1f48808dde37889bf90f2,
+    type: 2}
+  platformTemplate3: {fileID: 1327959220690384, guid: 2ab35fc71417b4708a241417d8b443d8,
+    type: 2}
+  material1: {fileID: 2100000, guid: 28f42992c7f07dc4dbd3098650b7f7f8, type: 2}
+  material2: {fileID: 2100000, guid: bd0ab360fedf6410ba4f0ad9048945e8, type: 2}
+  material3: {fileID: 2100000, guid: 5a85ed22715af4fdd8960780805163ee, type: 2}
+  selectedMaterial: {fileID: 2100000, guid: df7f690081d4e4848a6a34146b7aa031, type: 2}
 --- !u!4 &2079587851
 Transform:
   m_ObjectHideFlags: 0
