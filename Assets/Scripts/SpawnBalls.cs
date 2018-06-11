@@ -38,7 +38,7 @@ public class SpawnBalls : MonoBehaviour {
         }
         if (spawnSpeed < tempoMin) spawnSpeed = tempoMin;
         if (spawnSpeed > tempoMax) spawnSpeed = tempoMax;
-        OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", spawnSpeed);
+        OSCHandler.Instance.SendMessageToClient("PD", "/unity/Tempo", spawnSpeed);
         return i || d;
     }
     void spawnBalls(){
