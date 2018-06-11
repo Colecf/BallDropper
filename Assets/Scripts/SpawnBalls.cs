@@ -6,7 +6,9 @@ public class SpawnBalls : MonoBehaviour {
 
     public GameObject prefab;
     public GameObject increaseButton = null;
-    public GameObject decreaseButton;
+    public GameObject decreaseButton = null;
+    public float tempoMin = 0.2f;
+    public float tempoMax = 10f;
     private Vector3 spawnPosition;
 
     private float spawnSpeed = 3.0f;
@@ -34,7 +36,9 @@ public class SpawnBalls : MonoBehaviour {
         {
             spawnSpeed *= 1.2f;
         }
-        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", spawnSpeed);
+        if (spawnSpeed < tempoMin) spawnSpeed = tempoMin;
+        if (spawnSpeed > tempoMax) spawnSpeed = tempoMax;
+        OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", spawnSpeed);
         return i || d;
     }
     void spawnBalls(){

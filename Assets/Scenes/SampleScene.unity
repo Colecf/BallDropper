@@ -145,6 +145,8 @@ MonoBehaviour:
   prefab: {fileID: 1983029500820108, guid: 0535a2ac3dd294a28b137918ea11e131, type: 2}
   increaseButton: {fileID: 673574954}
   decreaseButton: {fileID: 1609240560}
+  tempoMin: 0.2
+  tempoMax: 10
 --- !u!23 &70895473
 MeshRenderer:
   m_ObjectHideFlags: 0
