@@ -12,7 +12,7 @@ public class BallScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float timeSinceInitialization = Time.timeSinceLevelLoad - initializationTime;
-        if(transform.position.y < -10 || timeSinceInitialization > 20){
+        if(transform.position.y < 0 || timeSinceInitialization > 20){
             Destroy(gameObject);
         }
 
