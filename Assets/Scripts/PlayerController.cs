@@ -111,9 +111,26 @@ public class PlayerController : MonoBehaviour {
                     unhighlightPlatform();
                 }
 
-                if(Input.GetMouseButtonDown(1) && lookedAtObject) {
-                    Destroy(lookedAtObject);
-                    lookedAtObject = null;
+                if(Input.GetMouseButtonDown(1)) {
+                    if (lookedAtObject)
+                    {
+                        Destroy(lookedAtObject);
+                        lookedAtObject = null;
+                    } else
+                    {
+                        if (selectedPlatform == platformTemplate)
+                        {
+                            selectedPlatform = platformTemplate2;
+                        }
+                        else if (selectedPlatform == platformTemplate2)
+                        {
+                            selectedPlatform = platformTemplate3;
+                        }
+                        else
+                        {
+                            selectedPlatform = platformTemplate;
+                        }
+                    }
                 }
 
             } else {
@@ -129,21 +146,6 @@ public class PlayerController : MonoBehaviour {
                 }
 
                 unhighlightPlatform();
-            }
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (selectedPlatform == platformTemplate)
-            {
-                selectedPlatform = platformTemplate2;
-            }
-            else if (selectedPlatform == platformTemplate2)
-            {
-                selectedPlatform = platformTemplate3;
-            }
-            else
-            {
-                selectedPlatform = platformTemplate;
             }
         }
 	}
