@@ -5,7 +5,7 @@ Shader "Custom/PlatformShader" {
 		_Color("Color", Color) = (1,1,1,1)
 	}
 		SubShader{
-
+		Tags{ "DisableBatching" = "True" }
 			Pass{
 		//Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
 		//LOD 100
@@ -225,10 +225,10 @@ Shader "Custom/PlatformShader" {
 			distances.y = worldScale.y*((0.5 - abs(i.objPos.y - 0.5)) * 2);
 			distances.z = worldScale.z*((0.5 - abs(i.objPos.z - 0.5)) * 2);
 			int2 importantAxis;
-			if (i.objPos.z == 0 || i.objPos.z > 0.9) {
+			if (i.objPos.z == 0 || i.objPos.z > 0.9999) {
 				importantAxis.x = 0;
 				importantAxis.y = 1;
-			} else if (i.objPos.x == 0 || i.objPos.x > 0.9) {
+			} else if (i.objPos.x == 0 || i.objPos.x > 0.9999) {
 				importantAxis.x = 2;
 				importantAxis.y = 1;
 			} else {
