@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour {
         theCamera = GameObject.Find("Main Camera");
         //yield return new WaitForEndOfFrame();
         selectedPlatform = platformTemplate;
-        //OSCHandler.Instance.Init();
-        //OSCHandler.Instance.SendMessageToClient("PD", "/Unity/Tempo", 3.0f);
+        OSCHandler.Instance.Init();
+        OSCHandler.Instance.SendMessageToClient("PD", "/unity/Tempo", 3.0f);
 	}
 
     // Update is called once per frame
