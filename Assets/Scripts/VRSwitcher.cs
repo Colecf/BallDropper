@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 public class VRSwitcher : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        //UnityEngine.XR.XRSettings.enabled = false;
+        //UnityEngine.XR.XRSettings.LoadDeviceByName("");
         string[] args = System.Environment.GetCommandLineArgs();
         //string[] args = { "mygame.exe", "-vr"};
         bool inVr = false;
