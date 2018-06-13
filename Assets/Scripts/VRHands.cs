@@ -12,12 +12,16 @@ public class VRHands : MonoBehaviour {
     public bool isLeftHand = false;
 
     public static GameObject platformTemplate = null;
-    private static GameObject currentPlatform = null;
+
+    public GameObject dropper;
+
+    private static GameObject currentObject = null;
     private static Vector3 platformStart;
     private static Vector3 platformEnd;
     private static float platformWidth = 1.0f;
     private bool isStartHand = false;
     private bool drawing = false;
+    private bool dropperMode = false;
 
     public GameObject parentObj;
     private Vector3 displacementBase;
@@ -57,7 +61,9 @@ public class VRHands : MonoBehaviour {
     {
         if (Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
             platformWidth = (Controller.GetAxis().y + 1) * 10;
-
+        if(Controller.GetTouchDown(SteamVR_Controller.ButtonMask.ApplicationMenu) && isLeftHand){
+            dropperMode = !dropperMode;
+        }
         if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
         {
             if (lookedAtObject)
@@ -67,7 +73,7 @@ public class VRHands : MonoBehaviour {
             }
             else
             {
-                if (currentPlatform == null)
+                if (currentObject == null)
                 {
                     bool absorbed = false;
                     foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
@@ -80,8 +86,13 @@ public class VRHands : MonoBehaviour {
                     if (!absorbed)
                     {
                         platformStart = platformEnd = trackedObj.transform.position;
-                        currentPlatform = Instantiate(platformTemplate);
-                        currentPlatform.transform.position = platformStart;
+                        if(dropperMode){
+                            currentObject = Instantiate(dropper);
+                        }
+                        else{
+                            currentObject = Instantiate(platformTemplate);
+                        }
+                        currentObject.transform.position = platformStart;
                         platformWidth = 1.0f;
                         isStartHand = false;
                     }
@@ -97,29 +108,34 @@ public class VRHands : MonoBehaviour {
         {
             if (!isStartHand)
             {
-                currentPlatform = null;
+                currentObject = null;
             }
             drawing = false;
         }
 
-        if (currentPlatform)
+        if (currentObject)
         {
-            if (isStartHand && drawing)
+            if (dropperMode && drawing)
             {
-                platformStart = trackedObj.transform.position;
+                currentObject.transform.position = trackedObj.transform.position;
             }
-            else if (!isStartHand && drawing)
-            {
-                platformEnd = trackedObj.transform.position;
-            }
+            else{
+                if (isStartHand && drawing)
+                {
+                    platformStart = trackedObj.transform.position;
+                }
+                else if (!isStartHand && drawing)
+                {
+                    platformEnd = trackedObj.transform.position;
+                }
+                if (!isStartHand)
+                {
+                    currentObject.transform.position = (platformStart + platformEnd) / 2;
+                    setScale(currentObject, platformWidth, 1f, (platformEnd - platformStart).magnitude);
 
-            if (!isStartHand)
-            {
-                currentPlatform.transform.position = (platformStart + platformEnd) / 2;
-                setScale(currentPlatform, platformWidth, 1f, (platformEnd - platformStart).magnitude);
-
-                if((platformEnd - platformStart).magnitude > 0)
-                    currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (platformEnd - platformStart).normalized);
+                    if ((platformEnd - platformStart).magnitude > 0)
+                        currentObject.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (platformEnd - platformStart).normalized);
+                }
             }
         }
 
