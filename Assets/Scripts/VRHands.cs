@@ -115,7 +115,7 @@ public class VRHands : MonoBehaviour {
 
         if (currentObject)
         {
-            if (dropperMode && drawing)
+            if (dropperMode && drawing && !isStartHand)
             {
                 currentObject.transform.position = trackedObj.transform.position;
             }
