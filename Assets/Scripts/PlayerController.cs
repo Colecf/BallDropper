@@ -16,16 +16,22 @@ public class PlayerController : MonoBehaviour {
     public GameObject platformTemplate2;
     public GameObject platformTemplate3;
 
+    public GameObject dropper;
+
     public Material material1;
     public Material material2;
     public Material material3;
-    public Material selectedMaterial;
+    public Material material4;
+    public Material selectedPlatformMaterial;
+    public Material selectedDropperMaterial;
 
-    private GameObject currentPlatform = null;
+    private GameObject currentObject = null;
     private GameObject selectedPlatform = null;
 
     private Vector3 platformStart;
     private float platformWidth = 1.0f;
+
+    private bool dropperMode = false;
 
     private GameObject lookedAtObject = null;
 
@@ -35,6 +41,7 @@ public class PlayerController : MonoBehaviour {
         UnityEngine.XR.XRSettings.LoadDeviceByName("");
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         theCamera = GameObject.Find("Main Camera");
         //yield return new WaitForEndOfFrame();
         selectedPlatform = platformTemplate;
@@ -46,16 +53,24 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         Vector3 lookedAtPoint = transform.position + theCamera.transform.rotation * new Vector3(0, 0, 3);
+        if(lookedAtPoint.y < -10)
+        {
+            lookedAtPoint.y = -10;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        if(Input.GetKeyDown(KeyCode.M)){
+            dropperMode = !dropperMode;
         }
         if (Input.GetMouseButtonDown(0))
         {
             Cursor.lockState = CursorLockMode.Locked;
-
+            Cursor.visible = false;
             
-            if (currentPlatform == null)
+            if (currentObject == null)
             {
                 bool absorbed = false;
                 foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
@@ -68,24 +83,43 @@ public class PlayerController : MonoBehaviour {
                 if (!absorbed)
                 {
                     platformStart = lookedAtPoint;
-                    currentPlatform = Instantiate(selectedPlatform);
-                    currentPlatform.transform.position = lookedAtPoint;
+                    if(dropperMode){
+                        currentObject = Instantiate(dropper);
+                    }
+                    else{
+                        currentObject = Instantiate(selectedPlatform);
+                    }
+                    currentObject.transform.position = lookedAtPoint;
                     platformWidth = 1.0f;
                 }
-            } else {
-                currentPlatform = null;
+            }
+            else
+            {
+                currentObject = null;
             }
         }
 
         if (Cursor.lockState == CursorLockMode.Locked) {
-            platformWidth += Input.GetAxis("Mouse ScrollWheel");
-            if(platformWidth < 0.1f) {
-                platformWidth = 0.1f;
+            if (!dropperMode)
+            {
+                platformWidth += Input.GetAxis("Mouse ScrollWheel");
+                if (platformWidth < 0.1f)
+                {
+                    platformWidth = 0.1f;
+                }
+                if (platformWidth > 20)
+                {
+                    platformWidth = 20;
+                }
             }
-            if(platformWidth > 20) {
-                platformWidth = 20;
+            float moveAmount = moveSpeed * Time.deltaTime;
+            transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveAmount, Input.GetAxis("Flight") * moveAmount, Input.GetAxis("Vertical") * moveAmount));
+            if(transform.position.y < -9.5)
+            {
+                Vector3 pos = transform.position;
+                pos.y = -9.5f;
+                transform.position = pos;
             }
-            transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, Input.GetAxis("Flight") * moveSpeed, Input.GetAxis("Vertical") * moveSpeed));
 
             float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
             
@@ -95,20 +129,26 @@ public class PlayerController : MonoBehaviour {
             transform.localEulerAngles = new Vector3(-0, rotationX, 0);
             theCamera.transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
 
-            if(!currentPlatform) {
+            if(!currentObject) {
                 RaycastHit hit;
                 Vector3 direction = theCamera.transform.rotation * new Vector3(0, 0, 1);
                 if (Physics.Raycast(transform.position, direction, out hit, 10, LayerMask.GetMask("Platform")) &&
-                    hit.collider.gameObject.CompareTag("Platform"))
+                    (hit.collider.gameObject.CompareTag("Platform") || hit.collider.gameObject.CompareTag("Dropper")))
                 {
                     if (lookedAtObject != hit.collider.gameObject)
                     {
-                        unhighlightPlatform();
+                        unhightlight();
                         lookedAtObject = hit.collider.gameObject;
-                        lookedAtObject.GetComponent<Renderer>().material = selectedMaterial;
+                        if(lookedAtObject.gameObject.CompareTag("Platform")){
+                            lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
+                        }
+                        else{
+                            lookedAtObject.GetComponent<Renderer>().material = selectedDropperMaterial;
+                        }
+
                     }
                 } else {
-                    unhighlightPlatform();
+                    unhightlight();
                 }
 
                 if(Input.GetMouseButtonDown(1)) {
@@ -134,18 +174,23 @@ public class PlayerController : MonoBehaviour {
                 }
 
             } else {
-                currentPlatform.transform.position = (platformStart + lookedAtPoint) / 2;
-                Vector3 temp = currentPlatform.transform.localScale;
-                temp.z = (lookedAtPoint - platformStart).magnitude;
-                temp.x = platformWidth;
-                currentPlatform.transform.localScale = temp;
 
-                if ((lookedAtPoint - platformStart).magnitude > 0)
+                if (!currentObject.name.Contains("Dropper"))
                 {
-                    currentPlatform.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                    currentObject.transform.position = (platformStart + lookedAtPoint) / 2;
+                    Vector3 temp = currentObject.transform.localScale;
+                    temp.z = (lookedAtPoint - platformStart).magnitude;
+                    temp.x = platformWidth;
+                    currentObject.transform.localScale = temp;
+                    if ((lookedAtPoint - platformStart).magnitude > 0)
+                    {
+                        currentObject.transform.rotation = vectorRotationQ(new Vector3(0, 0, 1), (lookedAtPoint - platformStart).normalized);
+                    }
                 }
-
-                unhighlightPlatform();
+                else{
+                    currentObject.transform.position = lookedAtPoint;
+                }
+                unhightlight();
             }
         }
 	}
@@ -155,7 +200,7 @@ public class PlayerController : MonoBehaviour {
         return Quaternion.Euler(Quaternion.LookRotation(target).eulerAngles - Quaternion.LookRotation(from).eulerAngles);
     }
 
-    private void unhighlightPlatform()
+    private void unhightlight()
     {
         if (lookedAtObject)
         {
@@ -164,6 +209,9 @@ public class PlayerController : MonoBehaviour {
             }
             else if(lookedAtObject.name.Contains("PlatformBase2")){
                 lookedAtObject.GetComponent<Renderer>().material = material2;
+            }
+            else if(lookedAtObject.name.Contains("Dropper")){
+                lookedAtObject.GetComponent<Renderer>().material = material4;
             }
             else{
                 lookedAtObject.GetComponent<Renderer>().material = material1;

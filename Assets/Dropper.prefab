@@ -42,7 +42,8 @@ GameObject:
   - component: {fileID: 33331161832640010}
   - component: {fileID: 23736889038291092}
   - component: {fileID: 114879367574665910}
-  m_Layer: 0
+  - component: {fileID: 136141015314649846}
+  m_Layer: 11
   m_Name: Dropper
   m_TagString: Dropper
   m_Icon: {fileID: 0}
@@ -75,13 +76,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1216828019722030}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.364, z: -0.40299988}
+  m_LocalRotation: {x: 0.70484346, y: -0.056530796, z: 0.056530837, w: 0.70484346}
+  m_LocalPosition: {x: -0.01848148, y: -0.33842596, z: -0.4096118}
   m_LocalScale: {x: 0.7, y: 0.23483011, z: 0.7000002}
   m_Children: []
   m_Father: {fileID: 4591780511557610}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 9.171}
 --- !u!4 &4591780511557610
 Transform:
   m_ObjectHideFlags: 1
@@ -89,7 +90,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373375246418514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: 7.47, z: -6.44}
+  m_LocalPosition: {x: 0, y: 23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4764145298238352}
@@ -103,13 +104,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1690432796560210}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.552, z: -0.403}
+  m_LocalRotation: {x: 0.70484316, y: -0.056533776, z: 0.056533832, w: 0.7048432}
+  m_LocalPosition: {x: -0.018481478, y: 0.55199975, z: -0.40961176}
   m_LocalScale: {x: 0.7, y: 0.23482917, z: 0.7}
   m_Children: []
   m_Father: {fileID: 4591780511557610}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 9.1710005}
 --- !u!23 &23159871260081652
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -302,6 +303,21 @@ MonoBehaviour:
   prefab: {fileID: 1983029500820108, guid: 0535a2ac3dd294a28b137918ea11e131, type: 2}
   increaseButton: {fileID: 1690432796560210}
   decreaseButton: {fileID: 1216828019722030}
+  tempoMin: 0.2
+  tempoMax: 10
+--- !u!136 &136141015314649846
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373375246418514}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!136 &136783501046863904
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -311,10 +327,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5000002
+  m_Radius: 0.3
   m_Height: 2.0000005
   m_Direction: 1
-  m_Center: {x: 0, y: -1, z: 0}
+  m_Center: {x: 0, y: -1.5, z: 0}
 --- !u!136 &136858890043646372
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -324,7 +340,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5000002
+  m_Radius: 0.3
   m_Height: 2.0000005
   m_Direction: 1
-  m_Center: {x: 0, y: -1, z: 0}
+  m_Center: {x: 0, y: -1.5, z: 0}
