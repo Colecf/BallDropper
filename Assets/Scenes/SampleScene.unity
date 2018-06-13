@@ -700,7 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivityX: 4
   sensitivityY: 4
-  moveSpeed: 0.5
+  moveSpeed: 50
   platformTemplate: {fileID: 1007498539336144, guid: b048d74441fb6f84e821f7242a2efc26,
     type: 2}
   platformTemplate2: {fileID: 1163989103591020, guid: 9200606f5ea1f48808dde37889bf90f2,
