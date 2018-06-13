@@ -22,6 +22,7 @@ public class SpawnBalls : MonoBehaviour {
     // Update is called once per frameu
     void Update()
     {
+        spawnPosition = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
     }
 
     public bool myClick()
@@ -38,7 +39,7 @@ public class SpawnBalls : MonoBehaviour {
         }
         if (spawnSpeed < tempoMin) spawnSpeed = tempoMin;
         if (spawnSpeed > tempoMax) spawnSpeed = tempoMax;
-        OSCHandler.Instance.SendMessageToClient("PD", "/unity/Tempo", spawnSpeed);
+        //OSCHandler.Instance.SendMessageToClient("PD", "/unity/Tempo", spawnSpeed);
         return i || d;
     }
     void spawnBalls(){
