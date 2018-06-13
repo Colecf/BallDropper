@@ -46,6 +46,10 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         Vector3 lookedAtPoint = transform.position + theCamera.transform.rotation * new Vector3(0, 0, 3);
+        if(lookedAtPoint.y < -10)
+        {
+            lookedAtPoint.y = -10;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
@@ -86,6 +90,12 @@ public class PlayerController : MonoBehaviour {
                 platformWidth = 20;
             }
             transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, Input.GetAxis("Flight") * moveSpeed, Input.GetAxis("Vertical") * moveSpeed));
+            if(transform.position.y < -9.5)
+            {
+                Vector3 pos = transform.position;
+                pos.y = -9.5f;
+                transform.position = pos;
+            }
 
             float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
             
