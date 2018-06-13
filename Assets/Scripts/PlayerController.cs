@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour {
         UnityEngine.XR.XRSettings.LoadDeviceByName("");
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         theCamera = GameObject.Find("Main Camera");
         //yield return new WaitForEndOfFrame();
         selectedPlatform = platformTemplate;
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
         if(Input.GetKeyDown(KeyCode.M)){
             dropperMode = !dropperMode;
@@ -66,6 +68,8 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             if (currentObject == null)
             {
                 bool absorbed = false;
@@ -108,7 +112,8 @@ public class PlayerController : MonoBehaviour {
                     platformWidth = 20;
                 }
             }
-            transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveSpeed, Input.GetAxis("Flight") * moveSpeed, Input.GetAxis("Vertical") * moveSpeed));
+            float moveAmount = moveSpeed * Time.deltaTime;
+            transform.Translate(new Vector3(Input.GetAxis("Horizontal") * moveAmount, Input.GetAxis("Flight") * moveAmount, Input.GetAxis("Vertical") * moveAmount));
             if(transform.position.y < -9.5)
             {
                 Vector3 pos = transform.position;
