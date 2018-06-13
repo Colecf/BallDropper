@@ -1,8 +1,8 @@
 #N canvas 741 118 918 749 10;
 #X obj 12 183 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 7100 1;
+-1 -1 0 1;
 #X obj 407 687 dac~;
-#X obj 79 105 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 79 105 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 79 140 \; pd dsp \$1;
 #X obj 12 346 line~;
@@ -73,7 +73,7 @@
 #X obj 77 186 r frequency;
 #X floatatom 77 215 5 0 0 0 - - -, f 5;
 #X obj 117 215 print frequency;
-#N canvas 554 388 526 544 beat 1;
+#N canvas 825 359 526 544 beat 0;
 #X obj 46 116 metro 750;
 #X obj 114 26 r tempo;
 #X obj 118 61 * 1000;
@@ -122,7 +122,7 @@
 #X obj 436 349 spigot;
 #X msg 435 292 1;
 #X msg 467 291 0;
-#N canvas -102 90 1920 997 bell 1;
+#N canvas -102 90 1920 997 bell 0;
 #X obj 226 16 inlet;
 #X obj 376 339 osc~;
 #X obj 291 496 *~;
@@ -144,7 +144,7 @@
 #X obj 419 299 * 0.75;
 #X obj 378 196 mtof;
 #X obj 387 78 hsl 128 15 20 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 447 1;
+-1 -1 0 1;
 #X floatatom 353 116 5 0 0 0 - - -, f 5;
 #X obj 469 382 *~ 0.1;
 #X obj 284 515 rev3~ 100 60;
@@ -223,7 +223,7 @@
 #X restore 257 462 pd bell;
 #N canvas 22 89 758 300 string 1;
 #X obj 174 67 hsl 128 15 20 80 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 7067 1;
+-1 -1 0 1;
 #X floatatom 137 78 5 0 0 0 - - -, f 5;
 #N canvas 0 50 450 300 random 0;
 #X obj 35 107 /;
@@ -363,34 +363,34 @@ at the specified pitch.;
 #X restore 442 473 pd string;
 #X obj 263 214 select 1 2 3, f 51;
 #X obj 91 353 *~;
-#X obj 104 318 tgl 25 0 empty empty Mute 30 7 0 15 -262144 -1 -1 1
+#X obj 104 318 tgl 25 0 empty empty Mute 30 7 0 15 -262144 -1 -1 0
 1;
 #X obj 93 469 *~;
 #X obj 149 497 tgl 15 0 empty empty Background_Toggle 17 7 0 10 -262144
 -1 -1 0 1;
 #X obj 337 507 tgl 15 0 empty empty Bell_Toggle 17 7 0 10 -262144 -1
--1 1 1;
+-1 0 1;
 #X obj 537 504 tgl 15 0 empty empty String_Toggle 17 7 0 10 -257985
--1 -1 1 1;
+-1 -1 0 1;
 #X obj 295 435 *~;
 #X obj 495 430 *~;
 #X floatatom 227 202 5 0 0 0 - - -, f 5;
 #X obj 149 358 vsl 15 128 0 1 0 0 empty empty Background_Volume 0 -9
-0 10 -262144 -1 -1 3000 1;
+0 10 -262144 -1 -1 0 1;
 #X obj 92 384 *~;
 #X obj 337 363 vsl 15 128 0 1 0 0 empty empty Bell_Volume 0 -9 0 10
--228856 -1 -1 4207 1;
+-228856 -1 -1 0 1;
 #X obj 295 406 *~;
 #X obj 535 365 vsl 15 128 0 1 0 0 empty empty String_Volume 0 -9 0
-10 -257985 -1 -1 10797 1;
+10 -257985 -1 -1 0 1;
 #X obj 494 405 *~;
 #X msg 668 294 1;
 #X msg 700 293 0;
 #X obj 718 508 tgl 15 0 empty empty "Brass"_Volume 17 7 0 10 -4032
--1 -1 1 1;
+-1 -1 0 1;
 #X obj 672 438 *~;
 #X obj 718 372 vsl 15 128 0 1 0 0 empty empty "Brass"_Volume 0 -9 0
-10 -4032 -1 -1 3982 1;
+10 -4032 -1 -1 0 1;
 #X obj 672 412 *~;
 #X obj 620 327 spigot;
 #X obj 316 324 spigot;
@@ -409,7 +409,7 @@ at the specified pitch.;
 #X obj 373 486 *~;
 #X obj 308 197 mtof;
 #X obj 317 79 hsl 128 15 20 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 565 1;
+-1 -1 0 1;
 #X floatatom 309 142 5 0 0 0 - - -, f 5;
 #N canvas 379 76 450 300 random 0;
 #X obj 35 107 /;
