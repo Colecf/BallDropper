@@ -36,7 +36,7 @@ public class VRHands : MonoBehaviour {
     public Material selectedPlatformMaterial;
     public Material selectedDropperMaterial;
 
-    private GameObject selectedPlatform = null;
+    private static GameObject selectedPlatform = null;
 
     public GameObject parentObj;
     private Vector3 displacementBase;
