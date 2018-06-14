@@ -10,7 +10,7 @@ public class SpawnBalls : MonoBehaviour {
     public float tempoMin = 0.2f;
     public float tempoMax = 10f;
     private Vector3 spawnPosition;
-    private bool isMasterDropper = false;
+    public bool isMasterDropper = false;
     private float spawnSpeed = 3.0f;
 
 	// Use this for initialization
@@ -37,9 +37,9 @@ public class SpawnBalls : MonoBehaviour {
         {
             spawnSpeed *= 1.2f;
         }
+        if (spawnSpeed < tempoMin) spawnSpeed = tempoMin;
+        if (spawnSpeed > tempoMax) spawnSpeed = tempoMax;
         if (isMasterDropper) {
-            if (spawnSpeed < tempoMin) spawnSpeed = tempoMin;
-            if (spawnSpeed > tempoMax) spawnSpeed = tempoMax;
             OSCHandler.Instance.SendMessageToClient("PD", "/unity/Tempo", spawnSpeed);
         }
         return i || d;

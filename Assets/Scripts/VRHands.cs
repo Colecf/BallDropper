@@ -12,6 +12,8 @@ public class VRHands : MonoBehaviour {
     public bool isLeftHand = false;
 
     public static GameObject platformTemplate = null;
+    public static GameObject platformTemplate2 = null;
+    public static GameObject platformTemplate3 = null;
 
     public GameObject dropper;
 
@@ -26,6 +28,15 @@ public class VRHands : MonoBehaviour {
     private bool wasActiveLastFrame = false;
 
     private bool isDropperHand = false;
+
+    public Material material1;
+    public Material material2;
+    public Material material3;
+    public Material material4;
+    public Material selectedPlatformMaterial;
+    public Material selectedDropperMaterial;
+
+    private GameObject selectedPlatform = null;
 
     public GameObject parentObj;
     private Vector3 displacementBase;
@@ -53,6 +64,9 @@ public class VRHands : MonoBehaviour {
     // Use this for initialization
     void Start () {
         platformTemplate = Resources.Load("PlatformBase") as GameObject;
+        platformTemplate2 = Resources.Load("PlatformBase2") as GameObject;
+        platformTemplate3 = Resources.Load("PlatformBase3") as GameObject;
+        selectedPlatform = platformTemplate;
     }
 
     void Awake()
@@ -69,7 +83,26 @@ public class VRHands : MonoBehaviour {
             dropperMode = !dropperMode;
             wasActiveLastFrame = true;
         }
-        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && isLeftHand)
+        {
+            wasActiveLastFrame = false;
+        }
+        if (Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand && !wasActiveLastFrame && !dropperMode)
+        {
+            if (selectedPlatform == platformTemplate)
+            {
+                selectedPlatform = platformTemplate2;
+            }
+            else if (selectedPlatform == platformTemplate2)
+            {
+                selectedPlatform = platformTemplate3;
+            }
+            else
+            {
+                selectedPlatform = platformTemplate;
+            }
+        }
+        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand)
         {
             wasActiveLastFrame = false;
         }
@@ -198,7 +231,7 @@ public class VRHands : MonoBehaviour {
         if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
         }
     }
 
@@ -207,17 +240,13 @@ public class VRHands : MonoBehaviour {
         if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == lookedAtObject)
-        {
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            lookedAtObject = null;
-        }
+        unhighlight();
     }
 
     private Quaternion vectorRotationQ(Vector3 from, Vector3 target)
@@ -234,11 +263,26 @@ public class VRHands : MonoBehaviour {
         o.transform.localScale = temp;
     }
 
-    private void unhighlightPlatform()
+    private void unhighlight()
     {
         if (lookedAtObject)
         {
-            lookedAtObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (lookedAtObject.name.Contains("PlatformBase3"))
+            {
+                lookedAtObject.GetComponent<Renderer>().material = material3;
+            }
+            else if (lookedAtObject.name.Contains("PlatformBase2"))
+            {
+                lookedAtObject.GetComponent<Renderer>().material = material2;
+            }
+            else if (lookedAtObject.name.Contains("Dropper"))
+            {
+                lookedAtObject.GetComponent<Renderer>().material = material4;
+            }
+            else
+            {
+                lookedAtObject.GetComponent<Renderer>().material = material1;
+            }
         }
         lookedAtObject = null;
     }

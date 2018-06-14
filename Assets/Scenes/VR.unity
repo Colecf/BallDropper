@@ -130,6 +130,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLeftHand: 0
   dropper: {fileID: 1373375246418514, guid: b7728fda04b07c64cae4272671d2b72e, type: 2}
+  material1: {fileID: 2100000, guid: 28f42992c7f07dc4dbd3098650b7f7f8, type: 2}
+  material2: {fileID: 2100000, guid: bd0ab360fedf6410ba4f0ad9048945e8, type: 2}
+  material3: {fileID: 2100000, guid: 5a85ed22715af4fdd8960780805163ee, type: 2}
+  material4: {fileID: 2100000, guid: 7e90f10e44a186a49a00679d068515ed, type: 2}
+  selectedPlatformMaterial: {fileID: 2100000, guid: df7f690081d4e4848a6a34146b7aa031,
+    type: 2}
+  selectedDropperMaterial: {fileID: 2100000, guid: 88dbb128a017f46a9b0835d909d45f38,
+    type: 2}
   parentObj: {fileID: 1042526774}
 --- !u!65 &290970992
 BoxCollider:
@@ -547,6 +555,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLeftHand: 1
   dropper: {fileID: 1373375246418514, guid: b7728fda04b07c64cae4272671d2b72e, type: 2}
+  material1: {fileID: 2100000, guid: 28f42992c7f07dc4dbd3098650b7f7f8, type: 2}
+  material2: {fileID: 2100000, guid: bd0ab360fedf6410ba4f0ad9048945e8, type: 2}
+  material3: {fileID: 2100000, guid: 5a85ed22715af4fdd8960780805163ee, type: 2}
+  material4: {fileID: 2100000, guid: 7e90f10e44a186a49a00679d068515ed, type: 2}
+  selectedPlatformMaterial: {fileID: 2100000, guid: df7f690081d4e4848a6a34146b7aa031,
+    type: 2}
+  selectedDropperMaterial: {fileID: 2100000, guid: 88dbb128a017f46a9b0835d909d45f38,
+    type: 2}
   parentObj: {fileID: 1042526774}
 --- !u!65 &1560515324
 BoxCollider:
@@ -571,7 +587,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
