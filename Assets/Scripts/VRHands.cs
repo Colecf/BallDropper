@@ -87,6 +87,10 @@ public class VRHands : MonoBehaviour {
         {
             wasActiveLastFrame = false;
         }
+        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand)
+        {
+            wasActiveLastFrame = false;
+        }
         if (Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand && !wasActiveLastFrame && !dropperMode)
         {
             if (selectedPlatform == platformTemplate)
@@ -102,10 +106,6 @@ public class VRHands : MonoBehaviour {
                 selectedPlatform = platformTemplate;
             }
             wasActiveLastFrame = true;
-        }
-        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand)
-        {
-            wasActiveLastFrame = false;
         }
         if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
         {
