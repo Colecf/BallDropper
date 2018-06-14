@@ -109,16 +109,29 @@ public class VRHands : MonoBehaviour {
         }
         if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
         {
+            bool absorbed = false;
             if (lookedAtObject)
             {
-                Destroy(lookedAtObject);
-                lookedAtObject = null;
-            }
-            else
-            {
-                if (currentObject == null)
+                if (lookedAtObject.CompareTag("Dropper"))
                 {
-                    bool absorbed = false;
+                    if (!lookedAtObject.GetComponent<SpawnBalls>().buttonSelected())
+                    {
+                        Destroy(lookedAtObject);
+                        lookedAtObject = null;
+                        absorbed = true;
+                    }
+                }
+                else
+                {
+                    Destroy(lookedAtObject);
+                    lookedAtObject = null;
+                    absorbed = true;
+                }
+            }
+            if (currentObject == null)
+            {
+                if (!absorbed)
+                {
                     foreach (GameObject o in GameObject.FindGameObjectsWithTag("Dropper"))
                     {
                         if (o.GetComponent<SpawnBalls>())
@@ -126,25 +139,26 @@ public class VRHands : MonoBehaviour {
                             absorbed = absorbed || o.GetComponent<SpawnBalls>().myClick();
                         }
                     }
-                    if (!absorbed)
-                    {
-                        platformStart = platformEnd = trackedObj.transform.position;
-                        if(dropperMode){
-                            currentObject = Instantiate(dropper);
-                            isDropperHand = true;
-                        }
-                        else{
-                            currentObject = Instantiate(selectedPlatform);
-                        }
-                        currentObject.transform.position = platformStart;
-                        platformWidth = 1.0f;
-                        isStartHand = false;
-                    }
                 }
-                else
+                if (!absorbed)
                 {
-                    isStartHand = true;
+                    platformStart = platformEnd = trackedObj.transform.position;
+                    if(dropperMode){
+                        currentObject = Instantiate(dropper);
+                        isDropperHand = true;
+                    }
+                    else{
+                        currentObject = Instantiate(selectedPlatform);
+                    }
+                    currentObject.transform.position = platformStart;
+                    platformWidth = 1.0f;
+                    isStartHand = false;
+                    drawing = true;
                 }
+            }
+            else
+            {
+                isStartHand = true;
                 drawing = true;
             }
         }
@@ -229,7 +243,7 @@ public class VRHands : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!drawing && lookedAtObject == null)
+        if (!drawing && lookedAtObject == null && (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Dropper")))
         {
             lookedAtObject = other.gameObject;
             if(lookedAtObject.CompareTag("Platform"))
@@ -237,13 +251,11 @@ public class VRHands : MonoBehaviour {
             else if(lookedAtObject.CompareTag("Dropper"))
                 lookedAtObject.GetComponent<Renderer>().material = selectedDropperMaterial;
         }
-
-
     }
 
     public void OnTriggerStay(Collider other)
     {
-        if (!drawing && lookedAtObject == null)
+        if (!drawing && lookedAtObject == null && (other.gameObject.CompareTag("Platform") || other.gameObject.CompareTag("Dropper")))
         {
             lookedAtObject = other.gameObject;
             if (lookedAtObject.CompareTag("Platform"))

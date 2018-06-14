@@ -22,17 +22,22 @@ public class RateButton : MonoBehaviour {
     
     public void OnTriggerEnter(Collider other)
     {
-        intersectedObjects.Add(other.gameObject);
-        Debug.Log("Enter");
-        gameObject.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
+        if (other.gameObject.CompareTag("Hand"))
+        {
+            intersectedObjects.Add(other.gameObject);
+            gameObject.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        intersectedObjects.Remove(other.gameObject);
-        if(intersectedObjects.Count == 0)
+        if (other.gameObject.CompareTag("Hand"))
         {
-            gameObject.GetComponent<Renderer>().material.color = new Color(1, 1, 1);
+            intersectedObjects.Remove(other.gameObject);
+            if (intersectedObjects.Count == 0)
+            {
+                gameObject.GetComponent<Renderer>().material.color = new Color(1, 1, 1);
+            }
         }
     }
 }
