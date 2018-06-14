@@ -41,5 +41,7 @@ Click and drag the grip button to move. Click and drag both grip buttons to scal
 ## Contributors
 
 [Cole Faust](https://github.com/colecf/)
+
 [Derek Kwong](https://github.com/dckwong/)
+
 [Joshua Lee](https://github.com/joshuatl)
