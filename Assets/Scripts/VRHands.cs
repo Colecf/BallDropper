@@ -255,7 +255,8 @@ public class VRHands : MonoBehaviour {
 
     public void OnTriggerExit(Collider other)
     {
-        unhighlight();
+        if(other.gameObject == lookedAtObject)
+            unhighlight();
     }
 
     private Quaternion vectorRotationQ(Vector3 from, Vector3 target)
