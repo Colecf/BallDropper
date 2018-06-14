@@ -37,3 +37,9 @@ Clicking the trigger while hovering over a platform/dropper will remove it. Clic
 Click the left menu button to switch to dropper mode, where the triggers will place new droppers.
 
 Click and drag the grip button to move. Click and drag both grip buttons to scale the world.
+
+## Contributors
+
+[Cole Faust](https://github.com/colecf/)
+[Derek Kwong](https://github.com/dckwong/)
+[Joshua Lee](https://github.com/joshuatl)
