@@ -2,6 +2,8 @@
 
 A game for our UCSC CMPM 151 class. Bounce balls off of platforms to make music.
 
+[Built releases available here](https://github.com/Colecf/BallDropper/releases)
+
 ## Instructions
 
 Before opening the app, open mainsound.pd in Pure Data. Change any audio devices you want to use in Pure Data.
