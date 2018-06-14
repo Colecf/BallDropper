@@ -21,7 +21,11 @@ public class VRHands : MonoBehaviour {
     private static float platformWidth = 1.0f;
     private bool isStartHand = false;
     private bool drawing = false;
-    private bool dropperMode = false;
+    private static bool dropperMode = false;
+
+    private bool wasActiveLastFrame = false;
+
+    private bool isDropperHand = false;
 
     public GameObject parentObj;
     private Vector3 displacementBase;
@@ -61,8 +65,13 @@ public class VRHands : MonoBehaviour {
     {
         if (Controller.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
             platformWidth = (Controller.GetAxis().y + 1) * 10;
-        if(Controller.GetTouchDown(SteamVR_Controller.ButtonMask.ApplicationMenu) && isLeftHand){
+        if(Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && isLeftHand && !wasActiveLastFrame){
             dropperMode = !dropperMode;
+            wasActiveLastFrame = true;
+        }
+        if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            wasActiveLastFrame = false;
         }
         if (Controller.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
         {
@@ -88,6 +97,7 @@ public class VRHands : MonoBehaviour {
                         platformStart = platformEnd = trackedObj.transform.position;
                         if(dropperMode){
                             currentObject = Instantiate(dropper);
+                            isDropperHand = true;
                         }
                         else{
                             currentObject = Instantiate(platformTemplate);
@@ -106,6 +116,11 @@ public class VRHands : MonoBehaviour {
         }
         if (Controller.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
         {
+            if (isDropperHand)
+            {
+                currentObject = null;
+                isDropperHand = false;
+            }
             if (!isStartHand)
             {
                 currentObject = null;
@@ -115,11 +130,11 @@ public class VRHands : MonoBehaviour {
 
         if (currentObject)
         {
-            if (dropperMode && drawing && !isStartHand)
+            if (currentObject.name.Contains("Dropper") && isDropperHand) 
             {
                 currentObject.transform.position = trackedObj.transform.position;
             }
-            else{
+            else if(currentObject.name.Contains("Platform")){
                 if (isStartHand && drawing)
                 {
                     platformStart = trackedObj.transform.position;
