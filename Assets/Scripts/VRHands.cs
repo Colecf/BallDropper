@@ -133,7 +133,7 @@ public class VRHands : MonoBehaviour {
                             isDropperHand = true;
                         }
                         else{
-                            currentObject = Instantiate(platformTemplate);
+                            currentObject = Instantiate(selectedPlatform);
                         }
                         currentObject.transform.position = platformStart;
                         platformWidth = 1.0f;
@@ -228,19 +228,27 @@ public class VRHands : MonoBehaviour {
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
+        if (!drawing && lookedAtObject == null)
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
+            if(lookedAtObject.CompareTag("Platform"))
+                lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
+            else if(lookedAtObject.CompareTag("Dropper"))
+                lookedAtObject.GetComponent<Renderer>().material = selectedDropperMaterial;
         }
+
+
     }
 
     public void OnTriggerStay(Collider other)
     {
-        if (!drawing && lookedAtObject == null && other.gameObject.CompareTag("Platform"))
+        if (!drawing && lookedAtObject == null)
         {
             lookedAtObject = other.gameObject;
-            lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
+            if (lookedAtObject.CompareTag("Platform"))
+                lookedAtObject.GetComponent<Renderer>().material = selectedPlatformMaterial;
+            else if (lookedAtObject.CompareTag("Dropper"))
+                lookedAtObject.GetComponent<Renderer>().material = selectedDropperMaterial;
         }
     }
 
