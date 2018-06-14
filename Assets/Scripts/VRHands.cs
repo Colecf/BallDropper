@@ -101,6 +101,7 @@ public class VRHands : MonoBehaviour {
             {
                 selectedPlatform = platformTemplate;
             }
+            wasActiveLastFrame = true;
         }
         if (!Controller.GetPress(SteamVR_Controller.ButtonMask.ApplicationMenu) && !isLeftHand)
         {
