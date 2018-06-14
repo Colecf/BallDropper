@@ -44,6 +44,14 @@ public class SpawnBalls : MonoBehaviour {
         }
         return i || d;
     }
+
+    public bool buttonSelected()
+    {
+        bool i = increaseButton && increaseButton.GetComponent<RateButton>().isPressed();
+        bool d = decreaseButton && decreaseButton.GetComponent<RateButton>().isPressed();
+        return i || d;
+    }
+
     void spawnBalls(){
         Instantiate(prefab, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
         Invoke("spawnBalls", spawnSpeed);
